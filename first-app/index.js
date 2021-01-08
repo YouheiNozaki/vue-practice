@@ -18,8 +18,20 @@ const app = createApp({
       </div>
     </div>
 
-    <input @input="input" :value="value" />
+    <input v-model="value" />
+    {{ value }}
+
     <div v-if="error">{{ error }}</div>
+    <input type="checkbox" v-model="value" />
+    {{ value }}
+
+    <input type="radio" v-model="value" value="a" />
+    <input type="radio" v-model="value" value="b" />
+    {{ value }}
+
+    <input type="checkbox" v-model="value" value="a" />
+    <input type="checkbox" v-model="value" value="b" />
+    {{ value }}
   `,
   computed: {
     evenList() {
@@ -36,7 +48,7 @@ const app = createApp({
       username: "user",
       count: 0,
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      value: "User"
+      value: ["a"]
     }
   },
   methods: {
