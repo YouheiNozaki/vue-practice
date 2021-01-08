@@ -4,6 +4,13 @@ const app = createApp({
   template: `
     <button v-on:click="increment(5)">Increment</button>
     <p>{{ count }}</p>
+
+    <div v-if="isEven()">
+      Even
+    </div>
+    <div v-else>
+      Odd
+    </div>
   `,
   data() {
     return {
@@ -13,6 +20,9 @@ const app = createApp({
   methods: {
     increment(val) {
       this.count += val
+    },
+    isEven() {
+      return this.count % 2 === 0
     }
   }
 }).mount('#app')
