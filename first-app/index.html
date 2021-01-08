@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vue.js</title>
+  </head>
+  <body>
+    <div id="app">
+      {{ person }}
+    </div>
+  </body>
+
+  <script type="module">
+    import { createApp } from "vue/dist/vue.esm-browser.js"
+
+    const app = createApp({
+      data() {
+        return {
+          msg: "world",
+          person: {
+            name: "Ryusou",
+            age: 26
+          }
+        }
+      }
+    }).mount('#app')
+  </script>
+</html>
