@@ -2,15 +2,17 @@ import { createApp } from "vue/dist/vue.esm-browser.js"
 
 const app = createApp({
   template: `
-    <p>{{ person }}</p>
+    <button v-on:click="increment(5)">Increment</button>
+    <p>{{ count }}</p>
   `,
   data() {
     return {
-      msg: "world",
-      person: {
-        name: "Ryusou",
-        age: 26
-      }
+      count: 0
+    }
+  },
+  methods: {
+    increment(val) {
+      this.count += val
     }
   }
 }).mount('#app')
