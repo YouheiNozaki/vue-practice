@@ -1,42 +1,45 @@
 import { createApp } from "vue/dist/vue.esm-browser.js"
 
+const Num = {
+  props: {
+    number: {
+      type: Number,
+      required: true
+    }
+  },
+  template: `
+    <div :class="getClass(number)">
+      <div>{{ number }}</div>
+    </div>
+  `,
+  methods: {
+    getClass(number) {
+      if (this.isEven(number)) {
+        return "red"
+      }
+      return "blue"
+    },
+    isEven(number) {
+      return number % 2 === 0
+    }
+  }
+}
+
 const app = createApp({
+  components: {
+    Num
+  },
   template: `
     <button @click="increment(5)">Increment</button>
     <p>{{ count }}</p>
 
-    <div v-if="isEven(count)">
-      Even
-    </div>
-    <div v-else>
-      Odd
-    </div>
-
-    <div v-for="number in numbers">
-      <div :class="getClass(number)" :title="number">
-        {{ number }}
-      </div>
-    </div>
-
-    <input v-model="value" />
-    {{ value }}
-
-    <div v-if="error">{{ error }}</div>
-    <input type="checkbox" v-model="value" />
-    {{ value }}
-
-    <input type="radio" v-model="value" value="a" />
-    <input type="radio" v-model="value" value="b" />
-    {{ value }}
+    <num v-for="number in numbers" :number="number" />
 
     <input type="checkbox" v-model="value" value="a" />
     <input type="checkbox" v-model="value" value="b" />
     {{ value }}
   `,
   computed: {
-    evenList() {
-      return this.numbers.filter(num => this.isEven(num))
-    },
     error() {
       if (this.value.length < 7) {
         return this.error = "Too short"
@@ -55,17 +58,8 @@ const app = createApp({
     input($evt) {
       this.value = $evt.target.value
     },
-    getClass(number) {
-      if (this.isEven(number)) {
-        return "red"
-      }
-      return "blue"
-    },
     increment(val) {
       this.count += val
     },
-    isEven(number) {
-      return number % 2 === 0
-    }
   }
 }).mount('#app')
