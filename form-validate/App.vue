@@ -2,7 +2,7 @@
   <my-button
     color="white"
     background="darkslateblue"
-    disabled="true"
+    disabled="!valid"
   />
 </template>
 
@@ -12,6 +12,11 @@ import MyButton from './MyButton.vue'
   export default {
     components: {
       MyButton
+    },
+    data() {
+      return {
+        valid: true
+      }
     }
   }
 </script>

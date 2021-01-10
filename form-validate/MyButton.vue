@@ -1,6 +1,7 @@
 <template>
   <button
     :style="{ background, color }"
+    :disabled="disabled"
   >
     Button
   </button>
@@ -23,6 +24,10 @@
 </script>
 
 <style scoped>
+button:disabled {
+  opacity: 0.5;
+}
+
 button {
   background: none;
   color: black;
