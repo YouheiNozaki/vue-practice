@@ -1,75 +1,59 @@
 <template>
-  <form @submit.prevent="submit" class="form">
-    <my-input
-      name="Username"
-      :rules="{ required: true, min: 5 }"
-      :value="username.value"
-      @update="update"
-      type="text"
+  <div class="wrapper">
+    <pokemon-cards
+      :pokemons="starters"
+      :selectedId="selectedId"
+      @pokemonClicked="fetchEvolutions"
     />
 
-    <my-input
-      name="Password"
-      :rules="{ required: true, min: 10 }"
-      :value="password.value"
-      @update="update"
-      type="password"
-    />
-
-    <my-button
-      color="white"
-      background="darkslateblue"
-      :disabled="!valid"
-    />
-  </form>
+    <pokemon-cards :pokemons="evolutions" />
+  </div>
 </template>
 
 <script>
-import MyButton from './MyButton.vue'
-import MyInput from './MyInput.vue'
+import Card from './Card.vue'
+import PokemonCards from './PokemonCards.vue'
+const api = 'https://pokeapi.co/api/v2/pokemon'
+const STARTER_IDS = [1, 4, 7]
 export default {
   components: {
-    MyButton,
-    MyInput
+    Card,
+    PokemonCards
+  },
+  async created() {
+    const starters = await this.fetchData(STARTER_IDS)
+    this.starters = starters
   },
   data() {
     return {
-      username: {
-        value: 'user',
-        valid: false
-      },
-      password: {
-        value: '',
-        valid: false
-      },
-    }
-  },
-  computed: {
-    valid() {
-      return this.username.valid && this.password.valid
+      starters: [],
+      evolutions: [],
+      selectedId: null
     }
   },
   methods: {
-    submit() {
-      console.log('Submit')
+    async fetchEvolutions(pokemon) {
+      this.selectedId = pokemon.id
+      this.evolutions = await this.fetchData([pokemon.id + 1, pokemon.id + 2])
     },
-
-    update(payload) {
-      this[payload.name.toLowerCase()] = {
-        value: payload.value,
-        valid: payload.valid
-      }
+    async fetchData(ids) {
+      const responses = await Promise.all(ids.map(id => window.fetch(`${api}/${id}`)))
+      const data = await Promise.all(responses.map(res => res.json()))
+      return data.map(datum => ({
+        id: datum.id,
+        name: datum.name,
+        sprite: datum.sprites.other['official-artwork'].front_default,
+        types: datum.types.map(type => type.type.name)
+      }))
     }
   }
 }
 </script>
 
-<style>
-body {
-  font-family: Arial;
-}
-.form {
-  max-width: 400px;
-  width: 50%;
+<style scoped>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
