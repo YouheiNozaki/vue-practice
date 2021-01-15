@@ -1,19 +1,32 @@
 <template>
-  <div>{{ msg }}</div>
+<div>
+  <button @click="increment">{{ count }}</button>
+  <button @click="increase">{{ numbers.a }}</button>
+  <button @click="increase">{{ numbers.b }}</button>
+</div>
 </template>
 
 <script>
+  import {ref, reactive} from "vue"
   export default {
-    created() {
-      console.log('created')
-    },
-    mounted() {
-      console.log("mounted")
-    },
     setup() {
-      console.log("setup")
+      const count = ref(0)
+      const numbers = reactive({
+        a: 0,
+        b: 0
+      })
+
+      const increase = (num) => {
+        numbers[num] += 1
+      }
+
+      const increment = () => {
+        count.value += 1
+      }
       return {
-        msg: "hello world"
+        increment,
+        count,
+        numbers
       }
     }
   }
